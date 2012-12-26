@@ -17,6 +17,9 @@
 
 	$user = new User($dbo);
 
- 	var_dump($user->searchUsers('name','jeremy', false));
+	$issue = new Issue($dbo);
+//	$issue->createIssue('Bug in Issue Tracker',	'Nothing really works.', 6, '1,2,6', 'General,PHP,Error');
+
+	var_dump($issue->searchIssues('status',0));
 
 ?>

@@ -14,9 +14,11 @@
 		public    $id;
 		protected $results = array();
 		protected $dbo;
+		protected $dbresults;
 
 		public function __construct(fDatabase $dbo) {
 			$this->dbo = $dbo;
+			$this->dbresults = new DBResults();
 		}
 
 		public function createUser(fDatabase $dbo, $n, $e) {
@@ -27,18 +29,8 @@
 		public function getUser( $id, $json = false) {
 			$statement = $this->dbo->prepare("SELECT * FROM users WHERE id = %i");
 			$result = $this->dbo->query($statement, $id);
-			foreach ($result as $row) {
-				$this->name  = $row['name'];
-				$this->email = $row['email'];
-				$this->id    = $row['id'];
-			}
 
-			if ($json == true) {
-				return json_encode(array('name'=>$this->name, 'email'=>$this->email, 'id'=>$this->id));
-			}
-			else {
-				return array('name'=>$this->name, 'email'=>$this->email, 'id'=>$this->id);
-			}
+			return $this->dbresults->createResults($result, $json);
 		}
 
 		public function searchUsers($type, $search, $json = false) {
@@ -57,32 +49,15 @@
 		protected function searchByName($search, $json) {
 			$statement = $this->dbo->prepare("SELECT * FROM users WHERE name like %s");
 			$result = $this->dbo->query($statement, '%'.$search.'%');
-			foreach ($result as $row) {
-				$this->results[] = $row;
-			}
 
-			if ($json == true) {
-				return json_encode($this->results);
-			}
-			else {
-				return $this->results;
-			}
+			return $this->dbresults->createResults($result, $json);
 		}
 
 		protected function searchByEmail($search, $json) {
 			$statement = $this->dbo->prepare("SELECT * FROM users WHERE email like %s");
 			$result = $this->dbo->query($statement, '%'.$search.'%');
-			$this->results = array('');
-			foreach ($result as $row) {
-				$this->results[] = $row;
-			}
 
-			if ($json == true) {
-				return json_encode($this->results);
-			}
-			else {
-				return $this->results;
-			}
+			return $this->dbresults->createResults($result, $json);
 		}
 
  	}
