@@ -8,9 +8,40 @@
  * @program	  Issue Tracker
  */
 
- 	class issue {
+ 	class Issue {
+		protected $dbo;
 
+		public function __construct(fDatabase $dbo) {
+			$this->dbo = $dbo;
+		}
 
+		public function createIssue($issue = null) {
+
+		}
+
+		public function getIssue() {
+
+		}
+
+		public function searchIssues() {
+
+		}
+
+		protected function searchByTag() {
+
+		}
+
+		protected function searchByUser() {
+
+		}
+
+		protected function searchByDate() {
+
+		}
+
+		protected function searchByStatus() {
+
+		}
 
  	}
 

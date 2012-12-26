@@ -8,10 +8,15 @@
  * @program	  Issue Tracker
  */
 
- 	require_once('/classes/user.php');
+ 	include_once('Classes/ClassAutoloader.php');
+	$autoloader = new ClassAutoloader();
 
- 	$user = new user('Jeremy','Jeremy1026@gmail.com','1');
- 	var_dump($user->getUser());
+ 	$dbo = new fDatabase('mysql','main','root','zaq1xswcde');
+ 	$dbo->connect();
 
+
+	$user = new User($dbo);
+
+ 	var_dump($user->searchUsers('name','jeremy', false));
 
 ?>
