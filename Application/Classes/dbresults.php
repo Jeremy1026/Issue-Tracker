@@ -11,9 +11,9 @@
  	class DBResults {
 		public $results = array();
 
- 		public function createResults($result, $json) {
+ 		public function createResults($result, $json = false) {
 			foreach ($result as $row) {
-				$this->results[] = $row;
+				array_push($this->results, $row);
 			}
 
 			if ($json == true) {

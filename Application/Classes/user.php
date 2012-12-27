@@ -12,7 +12,7 @@
 		public    $name;
 		public    $email;
 		public    $id;
-		protected $results = array();
+		protected $results;
 		protected $dbo;
 		protected $dbresults;
 
@@ -30,7 +30,7 @@
 			$statement = $this->dbo->prepare("SELECT * FROM users WHERE id = %i");
 			$result = $this->dbo->query($statement, $id);
 
-			return $this->dbresults->createResults($result, $json);
+			return $this->results = $this->dbresults->createResults($result, $json);
 		}
 
 		public function searchUsers($type, $search, $json = false) {

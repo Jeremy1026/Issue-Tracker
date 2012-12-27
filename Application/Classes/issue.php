@@ -23,21 +23,35 @@
 			$this->dbo->query($statement, $title, $description, $user, $users, $tags);
 		}
 
-		public function updateIssue($title, $description, $user, $users, $tags) {
+		public function updateIssue($id, $title, $description, $users, $tags) {
 			$date = date('d-m-Y H:i:s');
+			$statement = $this->dbo->prepare("UPDATE issues SET title = %s, description = %s, users = %s, tags = %s, updatedate = CURRENT_TIMESTAMP WHERE id = %i");
+			$this->dbo->query($statement, $title, $description, $users, $tags, $id);
 		}
 
-		public function deleteIssue($title, $description, $user, $users, $tags) {
-			$date = date('d-m-Y H:i:s');
-			$statement = $this->dbo->prepare("INSERT INTO issues (title, description, createdby, users, tags, creationdate, updatedate) VALUES (%s, %s, %i, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
-			$this->dbo->query($statement, $title, $description, $user, $users, $tags);
+		public function deleteIssue($id) {
+			$statement = $this->dbo->prepare("DELETE FROM issues WHERE id = %i");
+			$this->dbo->query($statement, $id);
 		}
 
 		public function getIssue($id, $json = false) {
-			$statement = $this->dbo->prepare("SELECT * FROM issues WHERE id = %i");
-			$result = $this->dbo->query($statement, $id);
+			$istatement = $this->dbo->prepare("SELECT * FROM issues WHERE id = %i");
+			$iresult = $this->dbo->query($istatement, $id);
 
-			return $this->dbresults->createResults($result, $json);
+			$iresults = $this->dbresults->createResults($iresult);
+
+			$this->dbresults->results = array();
+			$cstatement = $this->dbo->prepare("SELECT * FROM comments WHERE issueid = %i");
+			$cresult = $this->dbo->query($cstatement, $id);
+
+			$cresults = array('comments'=>$this->dbresults->createResults($cresult));
+			$results = array_merge($iresults, $cresults);
+			if ($json) {
+				return json_encode($results);
+			}
+			else {
+				return $results;
+			}
 		}
 
 		public function getAllIssues($json = false) {

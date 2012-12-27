@@ -16,13 +16,23 @@
 
 
 	$user = new User($dbo);
-//	$user->createUser('Jeremy Curcio', 'Jeremy1026@gmail.com');
-	
+
+ //	$user->createUser('Jeremy Curcio', 'Jeremy1026@gmail.com');
+
 	var_dump($user->getUser('1'));
-	
+
+
+	var_dump($user->getUser(6));
+
+//	var_dump($user);
 	$issue = new Issue($dbo);
 //	$issue->createIssue('Bug in Issue Tracker',	'Nothing really works yet.', 6, '1,2,6', 'General,PHP,Error');
 
 	var_dump($issue->searchIssues('status',1));
+
+	//	var_dump($issue->searchIssues('status',1));
+//	$issue->updateIssue(6,'Bug when updating tickets.','When updating a ticket everything seems to break uncontrollably','1,6','General,PHP,Error');
+
+	$comment = new Comments($dbo);
 
 ?>
