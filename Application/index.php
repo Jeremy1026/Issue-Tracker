@@ -16,10 +16,13 @@
 
 
 	$user = new User($dbo);
-
+//	$user->createUser('Jeremy Curcio', 'Jeremy1026@gmail.com');
+	
+	var_dump($user->getUser('1'));
+	
 	$issue = new Issue($dbo);
-//	$issue->createIssue('Bug in Issue Tracker',	'Nothing really works.', 6, '1,2,6', 'General,PHP,Error');
+//	$issue->createIssue('Bug in Issue Tracker',	'Nothing really works yet.', 6, '1,2,6', 'General,PHP,Error');
 
-	var_dump($issue->searchIssues('status',0));
+	var_dump($issue->searchIssues('status',1));
 
 ?>

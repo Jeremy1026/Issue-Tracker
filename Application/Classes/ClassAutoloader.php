@@ -1,11 +1,11 @@
 <?php
 /**
- * Physicians Management Group / Maryland Primary Care Physicians
+ * Jeremy Curcio
  *
- * @link      www.mpcp.com
- * @copyright Copyright (c) 2012 Physicians Management Group/Maryland Primary Care Physicians
+ * @link      www.jcurcio.com
+ * @copyright Copyright (c) 2012 Jeremy Curcio
  * @license   All code contained below is owned by Copyright holder(s) and may not be distributed.
- * @program
+ * @program	  Issue Tracker
  */
 
  	class ClassAutoloader {

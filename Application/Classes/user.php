@@ -21,12 +21,12 @@
 			$this->dbresults = new DBResults();
 		}
 
-		public function createUser(fDatabase $dbo, $n, $e) {
-			$statement = $dbo->prepare("INSERT INTO users (name, email) VALUES (%s, %s)");
-			$dbo->query($statement, $n, $e);
+		public function createUser($name, $email) {
+			$statement = $this->dbo->prepare("INSERT INTO users (name, email) VALUES (%s, %s)");
+			$this->dbo->query($statement, $name, $email);
 		}
 
-		public function getUser( $id, $json = false) {
+		public function getUser($id, $json = false) {
 			$statement = $this->dbo->prepare("SELECT * FROM users WHERE id = %i");
 			$result = $this->dbo->query($statement, $id);
 
