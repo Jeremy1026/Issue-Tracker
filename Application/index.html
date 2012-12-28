@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Issue Tracker Home</title>
+		<link rel="stylesheet" href="./inc/css/kube/kube.css" type="text/css">
+		<script src="../inc/js/validate"></script>
+		<script type="text/javascript">
+			function slidex (id, x){
+				var width = 0;
+				if (self.innerHeight)
+				{
+					width = self.innerWidth;
+				}
+				else if (document.documentElement && document.documentElement.clientHeight)
+				{
+					width = document.documentElement.clientWidth;
+				}
+				else if (document.body)
+				{
+					width = document.body.clientWidth;
+				}
+				var w = parseInt(document.getElementById(id).style.width);
+				x = width * x + (w / 2);
+
+				if (x > 0) {
+					document.getElementById('wrapper').style.display = 'none';
+				}
+				else {
+					document.getElementById('wrapper').style.display = 'inline';
+				}
+				slidex.obj=document.layers? document.layers[id] : document.all? document.all[id].style : document.getElementById? document.getElementById(id).style : null;
+				if(slidex.obj&&!slidex.going){
+					slidex.x=x<0? -1 : 1;
+					slidex.xa=x*slidex.x;
+					slidex.going=1;
+					slidex.doit();
+				}
+			}
+			slidex.px=document.layers? '' : 'px';
+			slidex.doit=function() {
+				slidex.obj.left = parseInt(slidex.obj.left) + slidex.x*slidex.speed + slidex.px;
+				if(slidex.xa>0){
+					slidex.xa-=slidex.speed;
+					setTimeout("slidex.doit()", slidex.xa<5*slidex.speed? 30 : slidex.xa<10*slidex.speed? 20 : 15);
+				}
+				else
+					slidex.going=0;
+			}
+			//Configure speed here (1-5). Note: the x in calls for slidex(id, x) should be evenly divisible by the speed value:
+			slidex.speed=10;
+
+		</script>
+	</head>
+	<body>
+		<div class="wrapper" id="wrapper" style="width: 320px; height: 300px; margin-left: -160px; margin-top: -150px; left:50%; top:50%; position: absolute;">
+			<form method="post" action="./login.php" name="login" class="forms">
+				<fieldset>
+					<ul>
+						<li>
+							<label for="user_email" class="bold">Email</label>
+							<input type="email" name="user_email" id="user_email" size="40" />
+						</li>
+						<li>
+							<label for="user_password" class="bold">Password</label>
+							<input type="password" name="user_password" id="user_password" size="40" />
+						</li>
+						<li>
+							<button class="btn half" onclick="document.forms['login'].submit();">Log In</button>
+						</li>
+					</ul>
+				</fieldset>
+			</form>
+			<button class="btn half" onclick="slidex('register-wrapper', .5);" style="position: relative; bottom:76px; left: 160px; width: 125px;" >Register</button>
+
+</div>
+		<div class="wrapper" id="register-wrapper" style="width: 320px; height: 500px; margin-left: 0; margin-top: -200px; left:-320px; top:50%; position: absolute; background-color: white;">
+			<form method="post" action="./register.php" name="register" class="forms">
+				<fieldset>
+					<ul>
+						<li>
+							<label for="user_first_name" class="bold">First Name</label>
+							<input type="text" name="user_first_name" id="user_first_name" size="40" />
+						</li>
+						<li>
+							<label for="user_last_name" class="bold">Last Name</label>
+							<input type="text" name="user_last_name" id="user_last_name" size="40" />
+						</li>
+						<li>
+							<label for="user_email" class="bold">Email</label>
+							<input type="email" name="user_email" id="user_email" size="40" />
+						</li>
+						<li>
+							<label for="user_password" class="bold">Password</label>
+							<input type="password" name="user_password" id="user_password" size="40" />
+						</li>
+						<li>
+							<label for="user_confirm_password" class="bold">Confirm Password</label>
+							<input type="password" name="user_confirm_password" id="user_confirm_password" size="40" />
+						</li>
+						<li>
+							<button class="btn half" onclick="document.forms['register'].submit();" style="width:180px;">Submit Registration</button>
+						</li>
+					</ul>
+				</fieldset>
+			</form>
+			<button class="btn half" onclick="slidex('register-wrapper', -1);" style="position: relative; bottom:76px; left: 200px; width: 85px;" >Cancel</button>
+
+		</div>
+	</body>
+</html>

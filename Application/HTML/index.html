@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Issue Tracker Home</title>
+		<link rel="stylesheet" href="../inc/css/kube/kube.css" type="text/css">
+		<script src="../inc/js/validate"></script>
+	</head>
+	<body>
+		<div class="wrapper" style="width: 320px; height: 300px; margin-left: -160px; margin-top: -150px; left:50%; top:50%; position: absolute;">
+			<form method="post" action="" class="forms columnar">
+				<fieldset>
+					<ul>
+						<li>
+							<label for="user_email" class="bold">Email</label>
+							<input type="email" name="user_email" id="user_email" size="40" />
+						</li>
+						<li>
+							<label for="user_name" class="bold">Name</label>
+							<input type="text" name="user_name" id="user_name" size="40" />
+						</li>
+						<li>
+							<button class="btn half" onclick="validate()">Log In</button>
+							<button class="btn half" onclick="register()">Register</button>
+						</li>
+					</ul>
+				</fieldset>
+			</form>
+
+
+		</div>
+	</body>
+</html>
