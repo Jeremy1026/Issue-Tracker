@@ -1,0 +1,83 @@
+<?php 
+$user->getUser(fSession::get('user_id'));
+$issues = $issue->getAllIssues();
+?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Issue Tracker - Issues</title>
+		<link rel="stylesheet" href="./inc/css/reset.css" type="text/css">
+		<link rel="stylesheet" href="./inc/css/kube/kube.css" type="text/css">
+		<link rel="stylesheet" href="./inc/css/kube/screen.css" type="text/css">
+		<script src="./inc/js/slide.js"></script>
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="row split">
+    			<div class="fourfifth bg-blue"><a onclick="slidex('create-wrapper',.5)">Create New Ticket</a></div>
+	    		<div class="fifth">Logged In As: <?php echo $user->name; ?></div>
+			</div>
+			<table class="width-100 hovered">
+				<thead>
+					<tr>
+						<th>Ticket Number</th>
+						<th>Application</th>
+						<th>Title</th>
+						<th>Created</th>
+						<th>Created By</th>
+						<th>Last Updated</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($issues as $iss) { 
+						$updateDate = new fDate($iss['updatedate']);
+						$createDate = new fDate($iss['creationdate']);
+						$user->getUser($iss['createdby']);
+					?>
+						<tr onclick="window.location.href='./ticket/<?php echo $iss['id']; ?>';" style="cursor:pointer;">
+							<td><?php echo $iss['id']; ?></td>
+							<td><?php echo $iss['application']; ?></td>
+							<td><?php echo $iss['title']; ?></td>
+							<td><?php echo $createDate->format('m-d-Y'); ?></td>
+							<td><?php echo $user->name; ?></td>
+							<td><?php echo $updateDate->getFuzzyDifference(); ?></td>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</div>
+		<div class="wrapper" id="create-wrapper" style="width:320px; height:500px; margin-left:0px; margin-top:-150px; padding-right:60px; left:-380px; top:50%; position:absolute; background-color:white;">
+			<form method="post" action="./register.php" name="register" class="forms">
+				<fieldset>
+					<ul>
+						<li>
+							<label for="application" class="bold">Application</label>
+							<input type="text" name="application" id="application" size="40" />
+						</li>
+						<li>
+							<label for="title" class="bold">Title</label>
+							<input type="text" name="title" id="title" size="40" />
+						</li>
+						<li>
+							<label for="description" class="bold">Description</label>
+							<textarea class="width-100" style="height: 55px;" name="title" id="title"></textarea>
+						</li>
+						<li>
+							<label for="users_assigned" class="bold">Users Assigned</label>
+							<input type="text" name="users_assigned" id="users_assigned" size="40" />
+						</li>
+						<li>
+							<label for="tags" class="bold">Tags</label> <label for="tags" class="descr">Separated by commas.</label>
+
+							<input type="text" name="tags" id="tags" size="40" />
+						</li>
+						<li>
+							<button class="btw half" onclick="document.forms['register'].submit();" style="width:170px; margin-top:10px">Create Ticket</button>
+						</li>
+					</ul>
+				</fieldset>
+			</form>
+			<button class="btw half" onclick="slidex('create-wrapper', -.8);" style="position: relative; bottom:71px; left: 220px; width: 110px;" >Cancel</button>
+		</div>
+	</body>
+</html>

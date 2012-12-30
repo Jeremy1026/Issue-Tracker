@@ -21,17 +21,33 @@
 			$this->dbresults = new iDBResults();
 		}
 
-		public function createUser($name, $email) {
-			$statement = $this->dbo->prepare("INSERT INTO users (name, email) VALUES (%s, %s)");
-			$this->dbo->query($statement, $name, $email);
+		public function createUser($first_name, $last_name, $email, $password) {
+			$statement = $this->dbo->prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (%s, %s, %s, %s)");
+			$this->dbo->query($statement, $first_name, $last_name, $email, $password);
+			echo "create";
+		}
+		
+		public function checkLogin($email, $password) {
+			$statement = $this->dbo->prepare("SELECT id, password FROM users WHERE email = %s");
+			$result = $this->dbo->query($statement, $email);
+			$results = $this->results = $this->dbresults->createResults($result, FALSE);
+		var_dump($results);
+			if (fCryptography::checkPasswordHash($password, $results[0]['password'])) {
+ 				return $results[0]['id'];
+			}	
+			else {
+				return FALSE;
+			}
 		}
 
 		public function getUser($id, $json = false) {
-			$statement = $this->dbo->prepare("SELECT * FROM users WHERE id = %i");
+			$statement = $this->dbo->prepare("SELECT first_name, last_name, email FROM users WHERE id = %i");
 			$result = $this->dbo->query($statement, $id);
 			$results = $this->results = $this->dbresults->createResults($result, $json);
 			$this->dbresults->results = array();
-			return $results;
+			$this->name = $this->results[0]['first_name'].' '.$this->results[0]['last_name'];
+			$this->email = $this->results[0]['email'];
+			return TRUE;
 		}
 
 		public function searchUsers($type, $search, $json = false) {

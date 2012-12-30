@@ -1,0 +1,72 @@
+<?php 
+$user->getUser(fSession::get('user_id'));
+$issues = $issue->getIssue(fSession::get('ticket'));
+?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Issue Tracker - Issue Details</title>
+		<link rel="stylesheet" href="../inc/css/reset.css" type="text/css">
+		<link rel="stylesheet" href="../inc/css/kube/kube.css" type="text/css">
+		<link rel="stylesheet" href="../inc/css/kube/screen.css" type="text/css">
+		<script src="../inc/js/slide.js"></script>
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="row split">
+    			<div class="fourfifth bg-blue">&nbsp;</div>
+	    		<div class="fifth">Logged In As: <?php echo $user->name; ?></div>
+			</div>
+			
+			<table class="width-100">
+				<thead>
+					<tr>
+						<th>Ticket Number</th>
+						<th>Application</th>
+						<th>Title</th>
+						<th>Created</th>
+						<th>Created By</th>
+						<th>Last Updated</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<?php 
+							$updateDate = new fDate($issues[0]['updatedate']);
+							$createDate = new fDate($issues[0]['creationdate']);
+							$user->getUser($issues[0]['createdby']);
+						?>
+						<td><?php echo $issues[0]['id']; ?></td>
+						<td><?php echo $issues[0]['application']; ?></td>
+						<td><?php echo $issues[0]['title']; ?></td>
+						<td><?php echo $createDate->format('m-d-Y'); ?></td>
+						<td><?php echo $user->name; ?></td>
+						<td><?php echo $updateDate->getFuzzyDifference(); ?></td>
+					</tr>
+					<tr>
+						<td colspan="6"><div style="width:100%;"><label class="bold">Description</label> <?php echo $issues[0]['description']; ?></div></td>
+					</tr>
+					<?php foreach ($issues['comments'] as $comment) {
+						$user->getUser($comment['createdby']);
+						$date = new DateTime($comment['creationdate']);
+					?>
+					<tr>
+						<td colspan="6">
+							<div style="width:100%"><?php echo $comment['comment']; ?></div>
+							<div style="text-align:right"><label class="descr">Posted on <?php echo date_format($date, 'm-d-Y \a\t g:ia'); ?> by <?php echo $user->name; ?></label></div>
+						</td>
+					</tr>
+					<?php } ?>
+					<tr>
+						<td colspan="6">
+							<form method="post" action="../addComment.php" name="comment" class="forms">
+								<textarea name="comment" style="width:100%; height:95px;"></textarea>
+								<button class="btn" onclick="document.forms['comment'].submit();">Add Comment</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

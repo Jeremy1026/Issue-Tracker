@@ -216,7 +216,6 @@ a {
   color: #336699;
 }
 a:hover {
-  color: #19334d;
 }
 h1,
 h2,
@@ -478,6 +477,7 @@ table.bordered .thead-black td,
 table.bordered .thead-black th {
   border: 1px solid #444;
 }
+
 /* =Forms
 -----------------------------------------------------------------------------*/
 .forms label {

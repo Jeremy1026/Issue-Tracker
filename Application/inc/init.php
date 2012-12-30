@@ -8,4 +8,5 @@
  * @program	  Issue Tracker
  */
 	include('./inc/config.php');
+
 ?>

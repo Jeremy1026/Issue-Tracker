@@ -19,7 +19,9 @@
 
 		public function createComment($issueid, $comment, $user) {
 			$statement = $this->dbo->prepare("INSERT INTO comments (issueid, comment, createdby, creationdate) VALUES (%i, %s, %i, CURRENT_TIMESTAMP)");
-			$this->dbo->query($statement, $issueid, $comment, $user);
+			if ($this->dbo->query($statement, $issueid, $comment, $user)) {
+				return TRUE;
+			}
 		}
 
 	}
