@@ -7,6 +7,8 @@
  * @license   All code contained below is owned by Copyright holder(s) and may not be distributed.
  * @program	  Issue Tracker
  */
+
 	include('./inc/config.php');
+	date_default_timezone_set("America/New_York");
 
 ?>

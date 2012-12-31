@@ -17,16 +17,41 @@
 			$this->dbresults = new iDBResults();
 		}
 
-		public function createIssue($title, $description, $user, $users, $tags) {
+		public function createIssue($application, $title, $description, $user, $users, $tags) {
 			$date = date('d-m-Y H:i:s');
-			$statement = $this->dbo->prepare("INSERT INTO issues (title, description, createdby, users, tags, creationdate, updatedate) VALUES (%s, %s, %i, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
-			$this->dbo->query($statement, $title, $description, $user, $users, $tags);
+			$statement = $this->dbo->prepare("INSERT INTO issues (application, title, description, createdby, creationdate, updatedate) VALUES (%s, %s, %s, %i, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
+			$this->dbo->query($statement, $application, $title, $description, $user);
+			
+			$statement = $this->dbo->prepare("SELECT id FROM issues ORDER BY creationdate DESC");
+			$result = $this->dbo->query($statement);
+			$results = $this->dbresults->createResults($result);
+			
+			foreach ($users as $u) {
+				$ustatement = $this->dbo->prepare("INSERT INTO issueUsers (issueID, userID) VALUES (%i, %i)");
+				$this->dbo->query($ustatement, $results[0]['id'], $u);
+			}
+			
+			$tags = explode(',', $tags);		
+			
+			foreach ($tags as $t) {
+				$t = trim($t);
+				$tstatement = $this->dbo->prepare("INSERT INTO issueTags (issueID, tag) VALUES (%i, %s)");
+				$this->dbo->query($tstatement, $results[0]['id'], $t);
+			}
+			
+			return $results[0]['id'];
+			
 		}
 
-		public function updateIssue($id, $title, $description, $users, $tags) {
+		public function updateIssue($id, $title, $description) {
 			$date = date('d-m-Y H:i:s');
-			$statement = $this->dbo->prepare("UPDATE issues SET title = %s, description = %s, users = %s, tags = %s, updatedate = CURRENT_TIMESTAMP WHERE id = %i");
-			$this->dbo->query($statement, $title, $description, $users, $tags, $id);
+			$statement = $this->dbo->prepare("UPDATE issues SET title = %s, description = %s, updatedate = CURRENT_TIMESTAMP WHERE id = %i");
+			$this->dbo->query($statement, $title, $description, $id);
+		}
+
+		public function issueUpdated($id) {
+			$statement = $this->dbo->prepare("UPDATE issues SET updatedate = CURRENT_TIMESTAMP WHERE id = %i");
+			$this->dbo->query($statement, $id);
 		}
 
 		public function deleteIssue($id) {
@@ -57,7 +82,7 @@
 		public function getAllIssues($json = false) {
 			$statement = $this->dbo->prepare("SELECT * FROM issues");
 			$result = $this->dbo->query($statement);
-			$results = $this->results = $this->dbresults->createResults($result, $json);
+			$results = $this->dbresults->createResults($result, $json);
 			$this->dbresults->results = array();
 			return $results;
 		}

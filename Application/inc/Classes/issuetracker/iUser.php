@@ -49,6 +49,15 @@
 			$this->email = $this->results[0]['email'];
 			return TRUE;
 		}
+		
+		public function getUserNames($json = true) {
+			$statement = $this->dbo->prepare("SELECT id, first_name, last_name FROM users");
+			$result = $this->dbo->query($statement);
+			$results = $this->results = $this->dbresults->createResults($result, $json);
+			$this->dbresults->results = array();
+			echo $results;
+			return $results;
+		}
 
 		public function searchUsers($type, $search, $json = false) {
 			switch ($type) {

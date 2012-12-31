@@ -14,8 +14,8 @@ $issues = $issue->getIssue(fSession::get('ticket'));
 	<body>
 		<div class="wrapper">
 			<div class="row split">
-    			<div class="fourfifth bg-blue">&nbsp;</div>
-	    		<div class="fifth">Logged In As: <?php echo $user->name; ?></div>
+    			<div class="fourfifth bg-blue"><a href="../">Return to Issue List</a></div>
+	    		<div class="fifth">Logged In As: <?php echo $user->name; ?><br /><a href="../logout.php">Log Out</a></div>
 			</div>
 			
 			<table class="width-100">
@@ -35,6 +35,10 @@ $issues = $issue->getIssue(fSession::get('ticket'));
 							$updateDate = new fDate($issues[0]['updatedate']);
 							$createDate = new fDate($issues[0]['creationdate']);
 							$user->getUser($issues[0]['createdby']);
+							if (strcmp($updateDate->getFuzzyDifference(),'today') == 0) {
+								$updateTime = strtotime($issues[0]['updatedate']);
+								$updateDate = new fTime($issues[0]['updatedate']);
+							}
 						?>
 						<td><?php echo $issues[0]['id']; ?></td>
 						<td><?php echo $issues[0]['application']; ?></td>
@@ -46,7 +50,11 @@ $issues = $issue->getIssue(fSession::get('ticket'));
 					<tr>
 						<td colspan="6"><div style="width:100%;"><label class="bold">Description</label> <?php echo $issues[0]['description']; ?></div></td>
 					</tr>
-					<?php foreach ($issues['comments'] as $comment) {
+				</tbody>
+			</table>
+			<table class="width-100 hovered">
+				<tbody>
+				<?php foreach ($issues['comments'] as $comment) {
 						$user->getUser($comment['createdby']);
 						$date = new DateTime($comment['creationdate']);
 					?>
@@ -57,6 +65,10 @@ $issues = $issue->getIssue(fSession::get('ticket'));
 						</td>
 					</tr>
 					<?php } ?>
+				</tbody>
+			</table>
+			<table class="width-100">
+				<tbody>
 					<tr>
 						<td colspan="6">
 							<form method="post" action="../addComment.php" name="comment" class="forms">

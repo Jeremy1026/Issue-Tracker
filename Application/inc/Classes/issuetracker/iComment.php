@@ -18,6 +18,21 @@
 		}
 
 		public function createComment($issueid, $comment, $user) {
+			$statement = $this->dbo->prepare("SELECT userid FROM issueUsers WHERE issueID = %i");
+			$result = $this->dbo->query($statement, $issueid);
+			$results = $this->dbresults->createResults($result);
+			var_dump($results);
+			$userExists = FALSE;
+			foreach ($results as $res) {
+				if (in_array($user,$res)) {
+					$userExists = TRUE;
+				}
+			}
+			if (!$userExists) {
+				$statement = $this->dbo->prepare("INSERT INTO issueUsers (issueid, userid) VALUES (%i, %i)");
+				$this->dbo->query($statement, $issueid, $user);
+			}
+			
 			$statement = $this->dbo->prepare("INSERT INTO comments (issueid, comment, createdby, creationdate) VALUES (%i, %s, %i, CURRENT_TIMESTAMP)");
 			if ($this->dbo->query($statement, $issueid, $comment, $user)) {
 				return TRUE;
