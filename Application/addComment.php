@@ -9,7 +9,7 @@
 	$issue = new iIssue($dbo);
 	if ($comment->createComment(fSession::get('ticket'),fRequest::get('comment'),fSession::get('user_id'))) {
 		$issue->issueUpdated(fSession::get('ticket'));
-		header("location:../ticket/".fSession::get('ticket'));
+		header("location:./ticket/".fSession::get('ticket'));
 	}
 	
 ?>
