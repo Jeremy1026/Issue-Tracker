@@ -62,6 +62,6 @@ function processChange() {
 }
 
 function getUsers() {
-	url = '../getUsers.php';
+	url = './getUsers.php';
 	ProcessAJAX(url);	
 }
